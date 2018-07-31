@@ -1,0 +1,13 @@
+vendor/bundle/build_info
+vendor/bundle/cache
+vendor/bundle/doc
+vendor/bundle/ruby
+test/
+tmp/
+log/
+Dockerfile
+docker-compose.yml
+Makefile
+.env*
+.dockerignore
+.git*

@@ -1,0 +1,42 @@
+version: '3.0'
+services:
+  ruby:
+    image: amaysim/ruby-builder:2.3-alpine
+    volumes:
+      - .:/srv/app:Z
+      - ~/.ssh:/root/.ssh:Z
+    env_file: .env
+    tmpfs:
+      - /srv/app/.bundle  # prevent config lingering after running a bundler command
+    environment:
+      BUNDLE_APP_CONFIG: .bundle/
+      BUNDLE_BIN: bin
+      BUNDLE_PATH: vendor/bundle
+    working_dir: /srv/app
+
+  ruby-fat:
+    image: ruby:2.3.4
+    volumes:
+      - .:/srv/app:Z
+      - ~/.ssh:/root/.ssh:Z
+    env_file: .env
+    tmpfs:
+      - /srv/app/.bundle
+    environment:
+      BUNDLE_APP_CONFIG: .bundle/
+      BUNDLE_BIN: bin
+      BUNDLE_PATH: vendor/bundle
+    working_dir: /srv/app
+
+  app:
+    build: .
+    image: 123456789123.dkr.ecr.ap-southeast-2.amazonaws.com/devops/my-ruby-app:local
+    read_only: true
+    volumes:
+      - .:/srv/app:Z
+    tmpfs:
+      - /srv/app/tmp
+    env_file: .env
+    ports:
+      - "3000:3000"
+      - "9292:9292"
